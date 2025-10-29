@@ -1,0 +1,28 @@
+<div class="post-list">
+    <h1>Blog Posts</h1>
+    <ul>
+        <?php if (isset($block->getPosts()) && count($block->getPosts()) > 0): ?>
+            <?php foreach ($block->getPosts() as $post): ?>
+                <li>
+                    <h2>
+                        <a href="<?php echo $block->getUrl('post/view', ['id' => $post->getId()]); ?>">
+                            <?php echo $post->getTitle(); ?>
+                        </a>
+                    </h2>
+                    <div class="post-image">
+                        <img src="<?php echo $post->getPostImage(); ?>" alt="<?php echo $post->getTitle(); ?>" />
+                    </div>
+                    <div class="post-excerpt">
+                        <p><?php echo $post->getShortContent(); ?></p>
+                    </div>
+                    <div class="post-meta">
+                        <span>Author: <?php echo $post->getAuthor(); ?></span>
+                        <span>Published on: <?php echo $post->getPublishedAt(); ?></span>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <li>No blog posts found.</li>
+        <?php endif; ?>
+    </ul>
+</div>

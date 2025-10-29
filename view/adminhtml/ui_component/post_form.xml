@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">post_form.post_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Post Information</item>
+    </argument>
+    
+    <settings>
+        <buttons>
+            <button name="save" class="Tigren\SimpleBlog\Block\Adminhtml\Post\Edit\SaveButton"/>
+            <button name="back" class="Tigren\SimpleBlog\Block\Adminhtml\Post\Edit\BackButton"/>
+            <button name="delete" class="Tigren\SimpleBlog\Block\Adminhtml\Post\Edit\DeleteButton"/>
+        </buttons>
+        <namespace>post_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>post_form.post_form_data_source</dep>
+        </deps>
+    </settings>
+    
+    <!-- DataSource -->
+    <dataSource name="post_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="tigren_simpleblog/post/save"/>
+        </settings>
+        <dataProvider class="Tigren\SimpleBlog\Model\Post\DataProvider" 
+                      name="post_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>post_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    
+    <!-- Fieldset -->
+    <fieldset name="general">
+        <settings>
+            <label translate="true">General Information</label>
+        </settings>
+        
+        <!-- Hidden ID field -->
+        <field name="post_id" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">post</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+            </settings>
+        </field>
+        
+        <!-- Title -->
+        <field name="title" sortOrder="10" formElement="input">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Title</label>
+            </settings>
+        </field>
+        
+        <!-- Author -->
+        <field name="author" sortOrder="20" formElement="input">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Author</label>
+            </settings>
+        </field>
+        
+        <!-- Category -->
+        <field name="category_id" sortOrder="25" formElement="select">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <label translate="true">Category</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Tigren\SimpleBlog\Model\Config\Source\Category"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        
+        <!-- Short Content -->
+        <field name="short_content" sortOrder="30" formElement="textarea">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Short Content</label>
+            </settings>
+        </field>
+        
+        <!-- Full Content -->
+        <field name="full_content" sortOrder="40" formElement="wysiwyg">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Full Content</label>
+            </settings>
+            <formElements>
+                <wysiwyg>
+                    <settings>
+                        <wysiwyg>true</wysiwyg>
+                    </settings>
+                </wysiwyg>
+            </formElements>
+        </field>
+        
+        <!-- Post Image -->
+        <field name="post_image" sortOrder="50" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Post Image URL</label>
+                <notice translate="true">Enter image URL or upload image</notice>
+            </settings>
+        </field>
+        
+        <!-- List Image -->
+        <field name="list_image" sortOrder="60" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">List Image URL</label>
+                <notice translate="true">Enter image URL or upload image</notice>
+            </settings>
+        </field>
+        
+        <!-- Status -->
+        <field name="status" sortOrder="70" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Enable Post</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        
+        <!-- Published At -->
+        <field name="published_at" sortOrder="80" formElement="date">
+            <settings>
+                <validation>
+                    <rule name="validate-date" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>string</dataType>
+                <label translate="true">Published At</label>
+            </settings>
+        </field>
+    </fieldset>
+</form>

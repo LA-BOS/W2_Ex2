@@ -1,0 +1,44 @@
+<?php
+/**
+ * @var \Tigren\SimpleBlog\Block\Post\View $block
+ */
+$post = $block->getPost();
+
+if (!$post): ?>
+    <div class="message error">
+        <p><?php echo __('Post not found.'); ?></p>
+    </div>
+<?php else: ?>
+    <div class="post-view">
+        <h1 class="page-title"><?php echo $block->escapeHtml($post->getTitle()); ?></h1>
+        
+        <div class="post-meta">
+            <span class="author">
+                <strong><?php echo __('Author:'); ?></strong> 
+                <?php echo $block->escapeHtml($post->getAuthor()); ?>
+            </span>
+            <span class="published-at">
+                <strong><?php echo __('Published:'); ?></strong> 
+                <?php echo $block->escapeHtml($post->getPublishedAt()); ?>
+            </span>
+        </div>
+        
+        <?php if ($post->getPostImage()): ?>
+        <div class="post-image">
+            <img src="<?php echo $block->escapeUrl($post->getPostImage()); ?>" 
+                 alt="<?php echo $block->escapeHtmlAttr($post->getTitle()); ?>" 
+                 class="post-main-image" />
+        </div>
+        <?php endif; ?>
+        
+        <div class="post-content">
+            <?php echo $post->getFullContent(); ?>
+        </div>
+        
+        <div class="post-actions">
+            <a href="<?php echo $block->getUrl('simpleblog/index/index'); ?>" class="action back">
+                <?php echo __('Back to Blog'); ?>
+            </a>
+        </div>
+    </div>
+<?php endif; ?>

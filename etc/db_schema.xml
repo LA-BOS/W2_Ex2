@@ -1,0 +1,39 @@
+<attachment id="file:db_schema.xml">
+<?xml version="1.0"?>
+<db_schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/etc/db_schema.xsd">
+    <table name="tigren_simpleblog_category" resource="default" engine="innodb" comment="Blog Categories">
+        <column name="entity_id" xsi:type="int" nullable="false" auto_increment="true">
+            <identity/>
+        </column>
+        <column name="name" xsi:type="varchar" length="255" nullable="false" comment="Category Name"/>
+        <column name="description" xsi:type="text" nullable="true" comment="Category Description"/>
+        <column name="status" xsi:type="int" nullable="false" default="1" comment="Status"/>
+        <column name="created_at" xsi:type="timestamp" nullable="false" comment="Created At"/>
+        <column name="updated_at" xsi:type="timestamp" nullable="false" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="category_id"/>
+        </constraint>
+    </table>
+    <table name="tigren_simpleblog_post" resource="default" engine="innodb" comment="Blog Posts">
+        <column name="post_id" xsi:type="int" nullable="false" auto_increment="true" comment="Post ID">
+            <identity/>
+        </column>
+        <column name="title" xsi:type="varchar" length="255" nullable="false" comment="Post Title"/>
+        <column name="post_image" xsi:type="varchar" length="255" nullable="true" comment="Post Image"/>
+        <column name="list_image" xsi:type="varchar" length="255" nullable="true" comment="List Image"/>
+        <column name="full_content" xsi:type="text" nullable="false" comment="Full Content"/>
+        <column name="short_content" xsi:type="text" nullable="true" comment="Short Content"/>
+        <column name="author" xsi:type="varchar" length="255" nullable="false" comment="Author"/>
+        <column name="status" xsi:type="int" nullable="false" default="1" comment="Status"/>
+        <column name="published_at" xsi:type="timestamp" nullable="false" comment="Published At"/>
+        <column name="category_id" xsi:type="int" nullable="false" comment="Category ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="post_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="FK_TIGREN_SIMPLEBLOG_POST_CATEGORY_ID">
+            <column name="category_id"/>
+            <reference table="tigren_simpleblog_category" column="category_id"/>
+        </constraint>
+    </table>
+</db_schema>
+</attachment>

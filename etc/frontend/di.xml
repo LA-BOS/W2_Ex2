@@ -1,0 +1,23 @@
+<dependency-injection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/di.xsd">
+    <type name="Magento\Framework\View\Element\Template">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="template" xsi:type="string">Tigren_SimpleBlog::post/view.phtml</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Tigren\SimpleBlog\Block\Category\List">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="template" xsi:type="string">Tigren_SimpleBlog::category/list.phtml</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Tigren\SimpleBlog\Block\Post\List">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="template" xsi:type="string">Tigren_SimpleBlog::post/list.phtml</item>
+            </argument>
+        </arguments>
+    </type>
+</dependency-injection>

@@ -1,0 +1,18 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+$categories = $block->getCategories();
+?>
+
+<div class="blog-category-list">
+    <h1>Blog Categories</h1>
+    <ul>
+        <?php foreach ($categories as $category): ?>
+            <li>
+                <a href="<?php echo $block->getUrl('blog/category/view', ['id' => $category->getId()]); ?>">
+                    <?php echo $category->getName(); ?>
+                </a>
+                <p><?php echo $category->getDescription(); ?></p>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>

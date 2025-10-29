@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::content">
+                    <resource id="Tigren_SimpleBlog::blog" title="Blog Management" sortOrder="100">
+                        <resource id="Tigren_SimpleBlog::blog_category" title="Categories" sortOrder="10">
+                            <resource id="Tigren_SimpleBlog::category_save" title="Save Category" sortOrder="10"/>
+                            <resource id="Tigren_SimpleBlog::category_delete" title="Delete Category" sortOrder="20"/>
+                        </resource>
+                        <resource id="Tigren_SimpleBlog::blog_post" title="Posts" sortOrder="20">
+                            <resource id="Tigren_SimpleBlog::post_save" title="Save Post" sortOrder="10"/>
+                            <resource id="Tigren_SimpleBlog::post_delete" title="Delete Post" sortOrder="20"/>
+                        </resource>
+                    </resource>
+                </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Tigren_SimpleBlog::config" title="Simple Blog Configuration"/>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

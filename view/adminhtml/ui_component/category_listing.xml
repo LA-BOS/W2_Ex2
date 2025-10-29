@@ -1,0 +1,66 @@
+<attachment id="file:category_listing.xml">
+<?xml version="1.0"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+    <dataSource name="category_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="name" xsi:type="string">category_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="primarySortBy" xsi:type="string">entity_id</argument>
+            <argument name="model" xsi:type="string">Tigren\SimpleBlog\Model\ResourceModel\Category\Collection</argument>
+        </argument>
+    </dataSource>
+    <columns name="category_listing_columns">
+        <column name="entity_id">
+            <settings>
+                <label translate="true">ID</label>
+                <visible>true</visible>
+                <sortable>true</sortable>
+            </settings>
+        </column>
+        <column name="name">
+            <settings>
+                <label translate="true">Name</label>
+                <visible>true</visible>
+                <sortable>true</sortable>
+            </settings>
+        </column>
+        <column name="description">
+            <settings>
+                <label translate="true">Description</label>
+                <visible>true</visible>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="status">
+            <settings>
+                <label translate="true">Status</label>
+                <visible>true</visible>
+                <sortable>true</sortable>
+            </settings>
+        </column>
+        <column name="created_at">
+            <settings>
+                <label translate="true">Created At</label>
+                <visible>true</visible>
+                <sortable>true</sortable>
+            </settings>
+        </column>
+        <column name="updated_at">
+            <settings>
+                <label translate="true">Updated At</label>
+                <visible>true</visible>
+                <sortable>true</sortable>
+            </settings>
+        </column>
+    </columns>
+    <actionsColumn name="actions">
+        <settings>
+            <label translate="true">Actions</label>
+            <actions>
+                <action name="edit" />
+                <action name="delete" />
+            </actions>
+        </settings>
+    </actionsColumn>
+</listing>
+</attachment>
