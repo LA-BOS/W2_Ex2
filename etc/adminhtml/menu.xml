@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Tigren_SimpleBlog::simpleblog" title="Simple Blog" module="Tigren_SimpleBlog" 
+             sortOrder="100" resource="Tigren_SimpleBlog::simpleblog"/>
+        <add id="Tigren_SimpleBlog::category" title="Blog Categories" module="Tigren_SimpleBlog" 
+             sortOrder="10" parent="Tigren_SimpleBlog::simpleblog" 
+             action="simpleblog/category" resource="Tigren_SimpleBlog::category"/>
+        <add id="Tigren_SimpleBlog::post" title="Blog Posts" module="Tigren_SimpleBlog" 
+             sortOrder="20" parent="Tigren_SimpleBlog::simpleblog" 
+             action="simpleblog/post" resource="Tigren_SimpleBlog::post"/>
+    </menu>
+</config>

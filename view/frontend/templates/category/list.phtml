@@ -1,0 +1,57 @@
+<?php
+/**
+ * @var $block Tigren\SimpleBlog\Block\Category\ListCategory
+ */
+$categories = $block->getCategories();
+?>
+<div class="blog-category-list">
+    <h1><?= __('Blog Categories') ?></h1>
+    
+    <?php if ($categories->getSize()): ?>
+        <div class="category-grid">
+            <?php foreach ($categories as $category): ?>
+                <div class="category-item">
+                    <h2>
+                        <a href="<?= $block->getCategoryUrl($category->getId()) ?>">
+                            <?= $block->escapeHtml($category->getName()) ?>
+                        </a>
+                    </h2>
+                    <?php if ($category->getDescription()): ?>
+                        <p class="category-description">
+                            <?= $block->escapeHtml($category->getDescription()) ?>
+                        </p>
+                    <?php endif; ?>
+                    <a href="<?= $block->getCategoryUrl($category->getId()) ?>" class="action primary">
+                        <?= __('View Posts') ?>
+                    </a>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php else: ?>
+        <p><?= __('No categories available.') ?></p>
+    <?php endif; ?>
+</div>
+
+<style>
+    .blog-category-list {
+        padding: 20px;
+    }
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .category-item {
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+    }
+    .category-item h2 {
+        margin-top: 0;
+    }
+    .category-description {
+        color: #666;
+        margin: 10px 0;
+    }
+</style>

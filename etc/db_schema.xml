@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    
+    <!-- Blog Category Table -->
+    <table name="tigren_blog_category" resource="default" engine="innodb" comment="Tigren Blog Category Table">
+        <column xsi:type="int" name="category_id" unsigned="true" nullable="false" identity="true" comment="Category ID"/>
+        <column xsi:type="varchar" name="name" nullable="false" length="255" comment="Category Name"/>
+        <column xsi:type="text" name="description" nullable="true" comment="Category Description"/>
+        <column xsi:type="smallint" name="status" unsigned="true" nullable="false" default="1" comment="Status (1=Enabled, 0=Disabled)"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="category_id"/>
+        </constraint>
+        <index referenceId="TIGREN_BLOG_CATEGORY_NAME" indexType="btree">
+            <column name="name"/>
+        </index>
+        <index referenceId="TIGREN_BLOG_CATEGORY_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+    </table>
+
+    <!-- Blog Post Table -->
+    <table name="tigren_blog_post" resource="default" engine="innodb" comment="Tigren Blog Post Table">
+        <column xsi:type="int" name="post_id" unsigned="true" nullable="false" identity="true" comment="Post ID"/>
+        <column xsi:type="int" name="category_id" unsigned="true" nullable="false" comment="Category ID"/>
+        <column xsi:type="varchar" name="title" nullable="false" length="255" comment="Post Title"/>
+        <column xsi:type="varchar" name="post_image" nullable="true" length="255" comment="Post Main Image"/>
+        <column xsi:type="text" name="list_image" nullable="true" comment="Post Image Gallery (JSON)"/>
+        <column xsi:type="text" name="full_content" nullable="true" comment="Full Content"/>
+        <column xsi:type="text" name="short_content" nullable="true" comment="Short Content"/>
+        <column xsi:type="varchar" name="author" nullable="true" length="255" comment="Author Name"/>
+        <column xsi:type="smallint" name="status" unsigned="true" nullable="false" default="1" comment="Status (1=Published, 0=Draft)"/>
+        <column xsi:type="timestamp" name="published_at" on_update="false" nullable="true" comment="Published At"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="post_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="TIGREN_BLOG_POST_CATEGORY_ID_TIGREN_BLOG_CATEGORY_CATEGORY_ID" 
+                    table="tigren_blog_post" column="category_id" 
+                    referenceTable="tigren_blog_category" referenceColumn="category_id" onDelete="CASCADE"/>
+        <index referenceId="TIGREN_BLOG_POST_CATEGORY_ID" indexType="btree">
+            <column name="category_id"/>
+        </index>
+        <index referenceId="TIGREN_BLOG_POST_TITLE" indexType="btree">
+            <column name="title"/>
+        </index>
+        <index referenceId="TIGREN_BLOG_POST_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+    </table>
+</schema>

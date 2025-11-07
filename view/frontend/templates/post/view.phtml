@@ -1,0 +1,157 @@
+<?php
+/**
+ * @var $block Tigren\SimpleBlog\Block\Post\View
+ */
+$post = $block->getPost();
+$category = $block->getCategory();
+$listImages = $block->getListImages();
+?>
+<div class="blog-post-view">
+    <div class="breadcrumbs">
+        <a href="<?= $block->getUrl('blog') ?>"><?= __('Blog') ?></a>
+        <span> / </span>
+        <a href="<?= $block->getCategoryUrl() ?>"><?= $block->escapeHtml($category->getName()) ?></a>
+        <span> / </span>
+        <strong><?= $block->escapeHtml($post->getTitle()) ?></strong>
+    </div>
+    
+    <div class="page-title-wrapper">
+        <h1 class="page-title">
+            <span><?= $block->escapeHtml($post->getTitle()) ?></span>
+        </h1>
+    </div>
+    
+    <div class="post-meta">
+        <?php if ($post->getAuthor()): ?>
+            <span class="author">
+                <strong><?= __('Author:') ?></strong> <?= $block->escapeHtml($post->getAuthor()) ?>
+            </span>
+        <?php endif; ?>
+        
+        <?php if ($post->getPublishedAt()): ?>
+            <span class="date">
+                <strong><?= __('Published:') ?></strong> <?= $block->formatDate($post->getPublishedAt()) ?>
+            </span>
+        <?php endif; ?>
+        
+        <span class="category">
+            <strong><?= __('Category:') ?></strong> 
+            <a href="<?= $block->getCategoryUrl() ?>">
+                <?= $block->escapeHtml($category->getName()) ?>
+            </a>
+        </span>
+    </div>
+    
+    <?php if ($post->getPostImage()): ?>
+        <div class="post-featured-image">
+            <img src="<?= $block->getPostImageUrl($post->getPostImage()) ?>" 
+                 alt="<?= $block->escapeHtml($post->getTitle()) ?>" />
+        </div>
+    <?php endif; ?>
+    
+    <?php if ($post->getShortContent()): ?>
+        <div class="post-short-content">
+            <p><strong><?= $block->escapeHtml($post->getShortContent()) ?></strong></p>
+        </div>
+    <?php endif; ?>
+    
+    <div class="post-full-content">
+        <?= /* @noEscape */ $post->getFullContent() ?>
+    </div>
+    
+    <?php if (!empty($listImages)): ?>
+        <div class="post-gallery">
+            <h3><?= __('Image Gallery') ?></h3>
+            <div class="gallery-grid">
+                <?php foreach ($listImages as $image): ?>
+                    <?php if (isset($image['path'])): ?>
+                        <div class="gallery-item">
+                            <img src="<?= $block->getPostImageUrl($image['path']) ?>" 
+                                 alt="<?= isset($image['alt']) ? $block->escapeHtml($image['alt']) : '' ?>" />
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    <?php endif; ?>
+    
+    <div class="actions-toolbar">
+        <a href="<?= $block->getCategoryUrl() ?>" class="action back">
+            <?= __('Back to %1', $block->escapeHtml($category->getName())) ?>
+        </a>
+        <a href="<?= $block->getUrl('blog') ?>" class="action">
+            <?= __('All Categories') ?>
+        </a>
+    </div>
+</div>
+
+<style>
+    .blog-post-view {
+        padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .breadcrumbs {
+        margin-bottom: 20px;
+        color: #666;
+    }
+    .breadcrumbs a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .post-meta {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f5f5f5;
+        border-radius: 5px;
+    }
+    .post-meta span {
+        display: inline-block;
+        margin-right: 20px;
+    }
+    .post-featured-image {
+        margin: 30px 0;
+        text-align: center;
+    }
+    .post-featured-image img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .post-short-content {
+        font-size: 18px;
+        color: #444;
+        margin: 20px 0;
+        padding: 15px;
+        background: #f9f9f9;
+        border-left: 4px solid #007bff;
+    }
+    .post-full-content {
+        line-height: 1.8;
+        margin: 30px 0;
+    }
+    .post-gallery {
+        margin: 40px 0;
+    }
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+    .gallery-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+    .actions-toolbar {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+    }
+    .actions-toolbar .action {
+        margin-right: 15px;
+    }
+</style>

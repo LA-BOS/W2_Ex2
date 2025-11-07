@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Blog Categories</title>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Tigren\SimpleBlog\Block\Category\ListCategory" name="category.list" template="Tigren_SimpleBlog::category/list.phtml"/>
+        </referenceContainer>
+    </body>
+</page>
