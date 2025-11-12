@@ -8,6 +8,10 @@ class Form extends Generic
     protected function _prepareForm()
     {
         $model = $this->_coreRegistry->registry('simpleblog_category');
+        
+        if (!$model) {
+            $model = $this->_objectManager->create(\Tigren\SimpleBlog\Model\Category::class);
+        }
 
         $form = $this->_formFactory->create([
             'data' => [

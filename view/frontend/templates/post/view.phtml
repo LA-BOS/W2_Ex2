@@ -8,17 +8,11 @@ $listImages = $block->getListImages();
 ?>
 <div class="blog-post-view">
     <div class="breadcrumbs">
-        <a href="<?= $block->getUrl('blog') ?>"><?= __('Blog') ?></a>
+        <a href="<?= $block->escapeUrl($block->getUrl('simpleblog')) ?>"><?= __('Blog') ?></a>
         <span> / </span>
-        <a href="<?= $block->getCategoryUrl() ?>"><?= $block->escapeHtml($category->getName()) ?></a>
+        <a href="<?= $block->escapeUrl($block->getCategoryUrl()) ?>"><?= $block->escapeHtml($category->getName()) ?></a>
         <span> / </span>
         <strong><?= $block->escapeHtml($post->getTitle()) ?></strong>
-    </div>
-    
-    <div class="page-title-wrapper">
-        <h1 class="page-title">
-            <span><?= $block->escapeHtml($post->getTitle()) ?></span>
-        </h1>
     </div>
     
     <div class="post-meta">
@@ -36,7 +30,7 @@ $listImages = $block->getListImages();
         
         <span class="category">
             <strong><?= __('Category:') ?></strong> 
-            <a href="<?= $block->getCategoryUrl() ?>">
+            <a href="<?= $block->escapeUrl($block->getCategoryUrl()) ?>">
                 <?= $block->escapeHtml($category->getName()) ?>
             </a>
         </span>
@@ -44,8 +38,8 @@ $listImages = $block->getListImages();
     
     <?php if ($post->getPostImage()): ?>
         <div class="post-featured-image">
-            <img src="<?= $block->getPostImageUrl($post->getPostImage()) ?>" 
-                 alt="<?= $block->escapeHtml($post->getTitle()) ?>" />
+            <img src="<?= $block->escapeUrl($block->getPostImageUrl($post->getPostImage())) ?>" 
+                 alt="<?= $block->escapeHtmlAttr($post->getTitle()) ?>" />
         </div>
     <?php endif; ?>
     
@@ -59,15 +53,20 @@ $listImages = $block->getListImages();
         <?= /* @noEscape */ $post->getFullContent() ?>
     </div>
     
-    <?php if (!empty($listImages)): ?>
+    <?php if (!empty($listImages) && is_array($listImages)): ?>
         <div class="post-gallery">
             <h3><?= __('Image Gallery') ?></h3>
             <div class="gallery-grid">
                 <?php foreach ($listImages as $image): ?>
-                    <?php if (isset($image['path'])): ?>
+                    <?php if (is_string($image)): ?>
                         <div class="gallery-item">
-                            <img src="<?= $block->getPostImageUrl($image['path']) ?>" 
-                                 alt="<?= isset($image['alt']) ? $block->escapeHtml($image['alt']) : '' ?>" />
+                            <img src="<?= $block->escapeUrl($block->getPostImageUrl($image)) ?>" 
+                                 alt="<?= $block->escapeHtmlAttr($post->getTitle()) ?>" />
+                        </div>
+                    <?php elseif (isset($image['path'])): ?>
+                        <div class="gallery-item">
+                            <img src="<?= $block->escapeUrl($block->getPostImageUrl($image['path'])) ?>" 
+                                 alt="<?= isset($image['alt']) ? $block->escapeHtmlAttr($image['alt']) : $block->escapeHtmlAttr($post->getTitle()) ?>" />
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
@@ -76,11 +75,11 @@ $listImages = $block->getListImages();
     <?php endif; ?>
     
     <div class="actions-toolbar">
-        <a href="<?= $block->getCategoryUrl() ?>" class="action back">
-            <?= __('Back to %1', $block->escapeHtml($category->getName())) ?>
+        <a href="<?= $block->escapeUrl($block->getCategoryUrl()) ?>" class="action back">
+            <span><?= __('Back to %1', $block->escapeHtml($category->getName())) ?></span>
         </a>
-        <a href="<?= $block->getUrl('blog') ?>" class="action">
-            <?= __('All Categories') ?>
+        <a href="<?= $block->escapeUrl($block->getUrl('simpleblog')) ?>" class="action">
+            <span><?= __('All Categories') ?></span>
         </a>
     </div>
 </div>
@@ -94,10 +93,14 @@ $listImages = $block->getListImages();
     .breadcrumbs {
         margin-bottom: 20px;
         color: #666;
+        font-size: 14px;
     }
     .breadcrumbs a {
         color: #007bff;
         text-decoration: none;
+    }
+    .breadcrumbs a:hover {
+        text-decoration: underline;
     }
     .post-meta {
         margin: 20px 0;
@@ -108,6 +111,10 @@ $listImages = $block->getListImages();
     .post-meta span {
         display: inline-block;
         margin-right: 20px;
+    }
+    .post-meta a {
+        color: #007bff;
+        text-decoration: none;
     }
     .post-featured-image {
         margin: 30px 0;
@@ -130,6 +137,7 @@ $listImages = $block->getListImages();
     .post-full-content {
         line-height: 1.8;
         margin: 30px 0;
+        font-size: 16px;
     }
     .post-gallery {
         margin: 40px 0;
@@ -145,6 +153,11 @@ $listImages = $block->getListImages();
         height: 200px;
         object-fit: cover;
         border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+    }
+    .gallery-item img:hover {
+        transform: scale(1.05);
     }
     .actions-toolbar {
         margin-top: 40px;
@@ -152,6 +165,21 @@ $listImages = $block->getListImages();
         border-top: 1px solid #ddd;
     }
     .actions-toolbar .action {
+        display: inline-block;
+        padding: 10px 20px;
         margin-right: 15px;
+        background: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 3px;
+    }
+    .actions-toolbar .action:hover {
+        background: #0056b3;
+    }
+    .actions-toolbar .action.back {
+        background: #6c757d;
+    }
+    .actions-toolbar .action.back:hover {
+        background: #545b62;
     }
 </style>

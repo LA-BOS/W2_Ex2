@@ -3,26 +3,20 @@ namespace Tigren\SimpleBlog\Controller\Adminhtml\Category;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\Controller\ResultFactory;
 
 class NewAction extends Action
 {
-    protected $resultPageFactory;
-
-    public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory
-    ) {
+    public function __construct(Context $context)
+    {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
     }
 
     public function execute()
     {
-        $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('Tigren_SimpleBlog::category');
-        $resultPage->getConfig()->getTitle()->prepend(__('New Category'));
-        return $resultPage;
+        // Forward to edit action
+        $resultForward = $this->resultFactory->create(ResultFactory::TYPE_FORWARD);
+        return $resultForward->forward('edit');
     }
 
     protected function _isAllowed()

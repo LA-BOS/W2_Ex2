@@ -28,6 +28,15 @@ class Save extends Action
 
             if ($id) {
                 $model->load($id);
+                if (!$model->getId()) {
+                    $this->messageManager->addErrorMessage(__('This category no longer exists.'));
+                    return $resultRedirect->setPath('*/*/');
+                }
+            }
+
+            // Set default status if not set
+            if (!isset($data['status'])) {
+                $data['status'] = 1;
             }
 
             $model->setData($data);
@@ -37,13 +46,16 @@ class Save extends Action
                 $this->messageManager->addSuccessMessage(__('You saved the category.'));
                 
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['category_id' => $model->getId()]);
+                    return $resultRedirect->setPath('*/*/edit', ['category_id' => $model->getId(), '_current' => true]);
                 }
                 return $resultRedirect->setPath('*/*/');
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
-                return $resultRedirect->setPath('*/*/edit', ['category_id' => $id]);
+                $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the category.'));
             }
+
+            $this->_getSession()->setFormData($data);
+            return $resultRedirect->setPath('*/*/edit', ['category_id' => $id]);
         }
         return $resultRedirect->setPath('*/*/');
     }

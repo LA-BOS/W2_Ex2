@@ -25,6 +25,11 @@ class Form extends Generic
     protected function _prepareForm()
     {
         $model = $this->_coreRegistry->registry('simpleblog_post');
+        
+        // Khởi tạo model nếu null
+        if (!$model) {
+            $model = $this->_objectManager->create(\Tigren\SimpleBlog\Model\Post::class);
+        }
 
         $form = $this->_formFactory->create([
             'data' => [
@@ -48,7 +53,8 @@ class Form extends Generic
 
         // Category dropdown
         $categories = $this->categoryCollectionFactory->create();
-        $categoryOptions = [];
+        $categories->addFieldToFilter('status', 1);
+        $categoryOptions = [['value' => '', 'label' => __('-- Please Select --')]];
         foreach ($categories as $category) {
             $categoryOptions[] = ['value' => $category->getId(), 'label' => $category->getName()];
         }
@@ -94,7 +100,8 @@ class Form extends Generic
                 'name' => 'post_image',
                 'label' => __('Post Image'),
                 'title' => __('Post Image'),
-                'required' => false
+                'required' => false,
+                'note' => __('Allowed file types: jpg, jpeg, gif, png')
             ]
         );
 
@@ -105,7 +112,8 @@ class Form extends Generic
                 'name' => 'short_content',
                 'label' => __('Short Content'),
                 'title' => __('Short Content'),
-                'required' => false
+                'required' => false,
+                'style' => 'height: 100px;'
             ]
         );
 
@@ -117,7 +125,8 @@ class Form extends Generic
                 'label' => __('Full Content'),
                 'title' => __('Full Content'),
                 'required' => false,
-                'config' => $this->_wysiwygConfig->getConfig()
+                'config' => $this->_wysiwygConfig->getConfig(),
+                'wysiwyg' => true
             ]
         );
 
@@ -145,7 +154,8 @@ class Form extends Generic
                 'title' => __('Published At'),
                 'date_format' => 'yyyy-MM-dd',
                 'time_format' => 'HH:mm:ss',
-                'required' => false
+                'required' => false,
+                'note' => __('Leave empty to use current date/time')
             ]
         );
 

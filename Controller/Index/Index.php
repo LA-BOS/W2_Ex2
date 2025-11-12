@@ -3,10 +3,11 @@ namespace Tigren\SimpleBlog\Controller\Index;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 
-class Index extends Action
+class Index extends Action implements HttpGetActionInterface
 {
     protected $resultPageFactory;
     protected $scopeConfig;

@@ -54,6 +54,6 @@ class View extends Template
     public function getCategoryUrl()
     {
         $category = $this->getCategory();
-        return $this->getUrl('blog/index/category', ['id' => $category->getId()]);
+        return $this->getUrl('simpleblog/index/category', ['id' => $category->getId()]);
     }
 }

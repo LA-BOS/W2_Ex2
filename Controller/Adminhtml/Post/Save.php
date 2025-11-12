@@ -7,23 +7,27 @@ use Tigren\SimpleBlog\Model\PostFactory;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\MediaStorage\Model\File\UploaderFactory;
 use Magento\Framework\Filesystem;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class Save extends Action
 {
     protected $postFactory;
     protected $uploaderFactory;
     protected $filesystem;
+    protected $dateTime;
 
     public function __construct(
         Context $context,
         PostFactory $postFactory,
         UploaderFactory $uploaderFactory,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        DateTime $dateTime
     ) {
         parent::__construct($context);
         $this->postFactory = $postFactory;
         $this->uploaderFactory = $uploaderFactory;
         $this->filesystem = $filesystem;
+        $this->dateTime = $dateTime;
     }
 
     public function execute()
@@ -37,6 +41,10 @@ class Save extends Action
 
             if ($id) {
                 $model->load($id);
+                if (!$model->getId()) {
+                    $this->messageManager->addErrorMessage(__('This post no longer exists.'));
+                    return $resultRedirect->setPath('*/*/');
+                }
             }
 
             // Handle post_image upload
@@ -48,9 +56,19 @@ class Save extends Action
                     $uploader->setFilesDispersion(false);
                     
                     $mediaDirectory = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA);
-                    $result = $uploader->save($mediaDirectory->getAbsolutePath('simpleblog/post'));
+                    $destinationPath = $mediaDirectory->getAbsolutePath('simpleblog/post');
+                    
+                    // Create directory if not exists
+                    if (!is_dir($destinationPath)) {
+                        mkdir($destinationPath, 0777, true);
+                    }
+                    
+                    $result = $uploader->save($destinationPath);
                     $data['post_image'] = 'simpleblog/post/' . $result['file'];
                 } catch (\Exception $e) {
+                    if ($e->getCode() != \Magento\Framework\File\Uploader::TMP_NAME_EMPTY) {
+                        $this->messageManager->addErrorMessage($e->getMessage());
+                    }
                     unset($data['post_image']);
                 }
             } else {
@@ -63,7 +81,17 @@ class Save extends Action
                 }
             }
 
-            // Handle list_image as JSON
+            // Set default status if not set
+            if (!isset($data['status'])) {
+                $data['status'] = 1;
+            }
+
+            // Set published_at to current time if not set and status is published
+            if (empty($data['published_at']) && $data['status'] == 1) {
+                $data['published_at'] = $this->dateTime->gmtDate();
+            }
+
+            // Handle list_image as JSON (for future enhancement)
             if (isset($data['list_image'])) {
                 if (is_array($data['list_image'])) {
                     $data['list_image'] = json_encode($data['list_image']);
@@ -77,13 +105,16 @@ class Save extends Action
                 $this->messageManager->addSuccessMessage(__('You saved the post.'));
                 
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['post_id' => $model->getId()]);
+                    return $resultRedirect->setPath('*/*/edit', ['post_id' => $model->getId(), '_current' => true]);
                 }
                 return $resultRedirect->setPath('*/*/');
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
-                return $resultRedirect->setPath('*/*/edit', ['post_id' => $id]);
+                $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the post.'));
             }
+
+            $this->_getSession()->setFormData($data);
+            return $resultRedirect->setPath('*/*/edit', ['post_id' => $id]);
         }
         return $resultRedirect->setPath('*/*/');
     }

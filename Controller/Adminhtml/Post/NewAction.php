@@ -3,26 +3,20 @@ namespace Tigren\SimpleBlog\Controller\Adminhtml\Post;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\Controller\ResultFactory;
 
 class NewAction extends Action
 {
-    protected $resultPageFactory;
-
-    public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory
-    ) {
+    public function __construct(Context $context)
+    {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
     }
 
     public function execute()
     {
-        $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('Tigren_SimpleBlog::post');
-        $resultPage->getConfig()->getTitle()->prepend(__('New Post'));
-        return $resultPage;
+        // Forward to edit action
+        $resultForward = $this->resultFactory->create(ResultFactory::TYPE_FORWARD);
+        return $resultForward->forward('edit');
     }
 
     protected function _isAllowed()

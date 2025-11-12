@@ -3,25 +3,26 @@ namespace Tigren\SimpleBlog\Controller\Index;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\View\Result\PageFactory;
-use Tigren\SimpleBlog\Model\CategoryFactory;
+use Tigren\SimpleBlog\Model\PostFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 
-class Category extends Action
+class Post extends Action implements HttpGetActionInterface
 {
     protected $resultPageFactory;
-    protected $categoryFactory;
+    protected $postFactory;
     protected $scopeConfig;
 
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
-        CategoryFactory $categoryFactory,
+        PostFactory $postFactory,
         ScopeConfigInterface $scopeConfig
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
-        $this->categoryFactory = $categoryFactory;
+        $this->postFactory = $postFactory;
         $this->scopeConfig = $scopeConfig;
     }
 
@@ -37,16 +38,16 @@ class Category extends Action
             return $resultRedirect->setPath('noroute');
         }
 
-        $categoryId = $this->getRequest()->getParam('id');
-        $category = $this->categoryFactory->create()->load($categoryId);
+        $postId = $this->getRequest()->getParam('id');
+        $post = $this->postFactory->create()->load($postId);
 
-        if (!$category->getId() || $category->getStatus() != 1) {
+        if (!$post->getId() || $post->getStatus() != 1) {
             $resultRedirect = $this->resultRedirectFactory->create();
-            return $resultRedirect->setPath('blog');
+            return $resultRedirect->setPath('simpleblog');
         }
 
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->getConfig()->getTitle()->set($category->getName());
+        $resultPage->getConfig()->getTitle()->set($post->getTitle());
         return $resultPage;
     }
 }

@@ -39,7 +39,7 @@ class View extends Template
 
     public function getPostUrl($postId)
     {
-        return $this->getUrl('blog/index/post', ['id' => $postId]);
+        return $this->getUrl('simpleblog/index/post', ['id' => $postId]);
     }
 
     public function getPostImageUrl($imagePath)

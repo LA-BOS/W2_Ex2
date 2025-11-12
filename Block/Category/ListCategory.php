@@ -26,6 +26,6 @@ class ListCategory extends Template
 
     public function getCategoryUrl($categoryId)
     {
-        return $this->getUrl('blog/index/category', ['id' => $categoryId]);
+        return $this->getUrl('simpleblog/index/category', ['id' => $categoryId]);
     }
 }

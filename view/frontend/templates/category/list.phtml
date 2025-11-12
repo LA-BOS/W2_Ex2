@@ -5,14 +5,13 @@
 $categories = $block->getCategories();
 ?>
 <div class="blog-category-list">
-    <h1><?= __('Blog Categories') ?></h1>
     
     <?php if ($categories->getSize()): ?>
         <div class="category-grid">
             <?php foreach ($categories as $category): ?>
                 <div class="category-item">
                     <h2>
-                        <a href="<?= $block->getCategoryUrl($category->getId()) ?>">
+                        <a href="<?= $block->escapeUrl($block->getCategoryUrl($category->getId())) ?>">
                             <?= $block->escapeHtml($category->getName()) ?>
                         </a>
                     </h2>
@@ -21,7 +20,7 @@ $categories = $block->getCategories();
                             <?= $block->escapeHtml($category->getDescription()) ?>
                         </p>
                     <?php endif; ?>
-                    <a href="<?= $block->getCategoryUrl($category->getId()) ?>" class="action primary">
+                    <a href="<?= $block->escapeUrl($block->getCategoryUrl($category->getId())) ?>" class="action primary">
                         <?= __('View Posts') ?>
                     </a>
                 </div>
@@ -46,12 +45,35 @@ $categories = $block->getCategories();
         border: 1px solid #ddd;
         padding: 20px;
         border-radius: 5px;
+        transition: box-shadow 0.3s;
+    }
+    .category-item:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     .category-item h2 {
         margin-top: 0;
     }
+    .category-item h2 a {
+        color: #333;
+        text-decoration: none;
+    }
+    .category-item h2 a:hover {
+        color: #007bff;
+    }
     .category-description {
         color: #666;
         margin: 10px 0;
+    }
+    .action.primary {
+        display: inline-block;
+        padding: 8px 16px;
+        background: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 3px;
+        margin-top: 10px;
+    }
+    .action.primary:hover {
+        background: #0056b3;
     }
 </style>
