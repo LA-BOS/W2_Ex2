@@ -1,4 +1,4 @@
-## 9️⃣ KIỂM TRA SYSTEM CONFIG
+##  KIỂM TRA SYSTEM CONFIG
 
 1. Đăng nhập Admin
 2. Vào **Stores** > **Configuration** > **Tigren** > **Simple Blog**
@@ -7,7 +7,7 @@
 
 ---
 
-## 🔟 KIỂM TRA FRONTEND
+## KIỂM TRA FRONTEND
 
 ### **URL để test:**
 ```
